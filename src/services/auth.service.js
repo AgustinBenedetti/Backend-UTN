@@ -31,8 +31,8 @@ class AuthService{
             },
             ENVIROMENT.SIGNATURE_KEY
         )
-
-        mailtransporter.sendMail(
+        try{
+            await mailtransporter.sendMail(
             {
                 from: ENVIROMENT.GMAIL_USER,
                 to: email,
@@ -42,7 +42,13 @@ class AuthService{
                         <a href="${ENVIROMENT.URL_BACKEND}/api/auth/verify-email/${verification_token}">"Verificar"</a>
                     `
             }
-        )
+                 )
+        }
+        catch(error){
+            console.error('ERROR AL ENVIAR MAIL DE VERIFICACION', error)
+            throw new ServerError(500, 'No se pudo enviar el mail de verificacion')
+        }
+        
     }
 
     static async verifyEmail(verification_token){

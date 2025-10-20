@@ -5,6 +5,7 @@ import AuthService from "../services/auth.service.js";
 class AuthController {
     static async register (request, response){
         try{
+            console.log('Intennto de registro')
             const { email, password, name } = request.body
             await AuthService.register(email, name, password)
             response.status(201).json({
