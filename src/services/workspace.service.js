@@ -54,7 +54,7 @@ class WorkspaceService {
                 subject: ` Te invitarion a unirte al Workspace ${workspace_selected.name} `,
                 html: `
                             <h1>Hola ${user_invited.name}, unite al Workspace ${workspace_selected.name}</h1>
-                            <a href="${ENVIROMENT.URL_FRONTEND}/api/member/confirm/${invitation_token}">"Unirme"</a>
+                            <a href="${ENVIROMENT.URL_BACKEND}/api/member/confirm/${invitation_token}">"Unirme"</a>
                         `
             }
         )
