@@ -82,6 +82,19 @@ class MemberWorkspaceRepository {
             console.error('[SERVER ERROR]: no se pudo actualizar el MemberWorkspace con el id indicado ' + memberworkspace_id, error)
         }
     }
+
+    static async getByUserIdAndWorkspaceId(user_id, workspace_id){
+        try{
+            const memberworkspace_found = await MemberWorkspace.findOne({
+                id_user: user_id,
+                id_workspace: workspace_id
+            })
+            return memberworkspace_found
+        }
+        catch(error){
+            console.error('[SERVER ERROR]: no se pudo obtener el MemberWorkspace ', error)
+        }
+    }
 }
 
 export default MemberWorkspaceRepository

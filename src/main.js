@@ -6,6 +6,7 @@ import ENVIROMENT from "./config/enviroment.config.js";
 import mailtransporter from "./config/mailTransporter.config.js";
 import cors from 'cors';
 import User from "./models/User.model.js";
+import memberRouter from "./routes/member.router.js";
 connectToMongoDB()
 
 const app = express()
@@ -17,14 +18,7 @@ app.use(cors());
 app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/workspace', workspaceRouter)
-//mailtransporter.sendMail(
-//  {
-//        from: ENVIROMENT.GMAIL_USER,
-//       to: "agusbenedetti50@gmail.com",
-//        subject: "Mail de prueba",
-//        html:  `<h1>Hola desde Node JS</h1>`
-//    }
-//)
+app.use('/api/member', memberRouter)
  
 
 app.listen(ENVIROMENT.PORT, 
