@@ -5,6 +5,8 @@ import UserRepository from "../repositories/user.repositorys.js"
 import WorkspaceRepository from "../repositories/workspace.repository.js"
 import WorkspaceService from "../services/workspace.service.js"
 import jwt from 'jsonwebtoken'
+import ChannelController from "./channel.controller.js"
+import ChannelService from "../services/channel.service.js"
 
 class WorkspaceController {
     static async getAll(request, response) {
@@ -34,6 +36,41 @@ class WorkspaceController {
             else {
                 console.error(
                     'ERROR AL OBTENER WORKSPACES', error
+                )
+                return response.status(500).json({
+                    ok: false,
+                    message: 'Error interno del servidor',
+                    status: 500
+                })
+            }
+        }
+    }
+
+    static async getAllDetail(request, response) {
+        try { 
+            const  {workspace_selected}  = request
+            const channels = await ChannelService.getAllChannelsByWorkspaceId(workspace_selected._id)
+            response.status(200).json({
+                ok: true,
+                status: 200,
+                message: 'Detalles del espacio de trabajo obtenidos exitosamente',
+                data: {
+                    workspace_detail: workspace_selected,
+                    channels: channels
+                }
+            })
+        }
+        catch (error) {
+            if (error.status) {
+                return response.status(error.status).json({
+                    ok: false,
+                    message: error.message,
+                    status: error.status
+                })
+            }
+            else {
+                console.error(
+                    'ERROR AL OBTENER DETALLES', error
                 )
                 return response.status(500).json({
                     ok: false,
@@ -130,6 +167,10 @@ class WorkspaceController {
             }
         }
     }
-}
+
+    
+
+    }
+
 
 export default WorkspaceController

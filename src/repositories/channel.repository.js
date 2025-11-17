@@ -1,10 +1,10 @@
-import Channel from "../models/Channel.model"
+import Channel from "../models/Channel.model.js"
 
 class ChannelRepository {
     static async create(workspace_id, name) {
         try {
             await Channel.insertOne({
-                workspace_id: workspace_id,
+                id_workspace: workspace_id,
                 name: name
             })
             console.log('[SERVER]: Channel creado con exito')
@@ -22,6 +22,30 @@ class ChannelRepository {
         }
         catch(error){
             console.error('[SERVER ERROR]: no se pudo obtener la lista de Channels', error)
+            throw error
+        }
+    }
+
+        static async getAllByWorkspaceId(workspace_id) {
+        try{
+            const channels = await Channel.find({ id_workspace: workspace_id })
+            return channels
+        }
+        catch(error){
+            console.error('[SERVER ERROR]: no se pudo obtener la lista de canales', error)
+            throw error
+        }
+    }
+
+    static async getByChannelIdAndWorkspaceId(channel_id, workspace_id) {
+        try {
+            const channel_found = await Channel.findOne({
+                _id: channel_id,
+                id_workspace: workspace_id
+            })
+            return channel_found
+        } catch (error) {
+            console.error('[SERVER ERROR]: no se pudo obtener el Channel con el id indicado en el Workspace indicado ' + channel_id, error)
             throw error
         }
     }

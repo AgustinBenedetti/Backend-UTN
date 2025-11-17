@@ -1,4 +1,4 @@
-import MessageChannel from "../models/MessageChannel.model"
+import MessageChannel from "../models/MessageChannel.model.js"
 
 
 class MessagesChannelRepository {
@@ -13,6 +13,18 @@ class MessagesChannelRepository {
         }
         catch (error) {
             console.error('[SERVER ERROR]: no se pudo crear el Message', error)
+            throw error
+        }
+    }
+
+    static async getAllByChannelId(channel_id){
+        try {
+            const messages = await MessageChannel.find({id_channel: channel_id})
+            .populate('id_sender')
+            return messages
+        }
+        catch (error) {
+            console.error('[SERVER ERROR]: no se pudo obtener la lista de Messages', error)
             throw error
         }
     }
