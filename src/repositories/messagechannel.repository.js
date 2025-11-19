@@ -20,8 +20,27 @@ class MessagesChannelRepository {
     static async getAllByChannelId(channel_id){
         try {
             const messages = await MessageChannel.find({id_channel: channel_id})
-            .populate('id_sender')
-            return messages
+            .populate({
+                path: 'id_sender',
+                populate: {
+                    path: 'id_user',
+                    model: "User",
+                    select: 'name _id'
+                }
+            })
+
+            const messages_formated = messages.map(
+                (message) => {
+                return {
+                    _id: message._id,
+                    id_sender: message.id_sender._id,
+                    sender_name: message.id_sender.id_user.name,
+                    content: message.content,
+                    messages_created_at: message.created_at,
+                }
+            })
+
+            return messages_formated
         }
         catch (error) {
             console.error('[SERVER ERROR]: no se pudo obtener la lista de Messages', error)

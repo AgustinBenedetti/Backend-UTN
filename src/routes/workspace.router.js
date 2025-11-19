@@ -24,7 +24,7 @@ workspaceRouter.post(
 )
 
 workspaceRouter.get(
-    '/:workspace_id',
+    '/:workspace_id/channels',
     authMiddleware,
     workspaceMiddleware(['member', 'admin']),
     WorkspaceController.getAllDetail
